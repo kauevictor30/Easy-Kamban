@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar bg-base-300 shadow">
+  <div class="navbar bg-base-100 shadow-sm">
     <div class="flex-none">
       <button class="btn btn-square btn-ghost" @click="toggleSidebar">
         <svg

@@ -1,12 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
-// 1. Importar o Layout do Template (PetClinic)
-import LayoutDefault from '@/layouts/layoutDefault.vue'
-
-// 2. Importar as suas Views (Telas)
 import Login from '@/Login.vue'
 import Board from '@/components/Board.vue'
-// Se quiser manter as telas de tutores do template:
 import TutorsIndex from '@/views/tutors/index.vue'
 import TutorsAdd from '@/views/tutors/add.vue'
 import TutorsEdit from '@/views/tutors/edit.vue'
@@ -18,18 +12,15 @@ const routes = [
     component: Login
   },
   {
-    // Rota Pai: Carrega o Layout (Menu Lateral + Navbar)
     path: '/',
-    component: LayoutDefault,
+    component: () => import('../layouts/layoutDefault.vue'),
     meta: { requiresAuth: true },
     children: [
       {
-        // Rota Filha: O Kanban aparece DENTRO do layout
         path: '',
         name: 'Board',
         component: Board
       },
-      // Rotas do PetClinic (Opcional, se quiser manter para consulta)
       {
         path: 'tutors',
         name: 'tutors.index',

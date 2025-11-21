@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-6 h-full items-start">
+  <div class="flex gap-6 h-full items-start p-4 overflow-x-auto">
     <KanbanList
       v-for="list in lists"
       :key="list.id"
@@ -7,12 +7,13 @@
       :title="list.title"
       @edit-task="openTaskModal"
     />
-    <div class="min-w-[280px]">
-        <button class="w-full p-3 bg-white/10 hover:bg-white/20 rounded-lg text-slate-50 font-medium text-left transition-colors" @click="addNewList">
-            + Adicionar outra lista
+    <div class="min-w-[280px] shrink-0">
+        <button
+          class="w-full p-3 bg-base-100/50 hover:bg-base-100 border border-dashed border-base-content/20 rounded-lg text-base-content/70 font-medium text-left transition-colors flex items-center gap-2"
+          @click="openAddListModal">
+            <span>+</span> Adicionar outra lista
         </button>
     </div>
-
     <TaskModal
         :is-open="isModalOpen"
         :task="currentTask || {}"
@@ -20,27 +21,64 @@
         @save="saveTask"
         @delete="deleteTask"
     />
+    <div v-if="showInputModal" class="modal modal-open modal-bottom sm:modal-middle cursor-pointer" @click.self="showInputModal = false">
+      <div class="modal-box bg-base-100">
+        <h3 class="font-bold text-lg text-base-content">Nova Lista</h3>
+        <div class="py-4">
+          <p class="text-sm text-base-content/70 mb-2">Qual será o nome da nova coluna?</p>
+          <input
+            ref="inputListRef"
+            v-model="newListTitle"
+            type="text"
+            placeholder="Ex: A Fazer, Em Revisão..."
+            class="input input-bordered w-full focus:input-primary"
+            @keyup.enter="confirmAddList"
+          />
+        </div>
+        <div class="modal-action">
+          <button class="btn btn-ghost" @click="showInputModal = false">Cancelar</button>
+          <button class="btn btn-primary" @click="confirmAddList" :disabled="!newListTitle">
+            Criar Lista
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, nextTick } from 'vue'
 import KanbanList from './KanbanList.vue'
 import TaskModal from './TaskModal.vue'
 import store from '../store'
 
 const lists = computed(() => store.state.lists)
+
 const isModalOpen = ref(false)
 const currentTask = ref(null)
+
+const showInputModal = ref(false)
+const newListTitle = ref('')
+const inputListRef = ref(null)
 
 onMounted(async () => {
     await store.loadBoard()
 })
 
-async function addNewList() {
-    const title = prompt('Nome da nova lista:')
-    if (title) {
-        await store.addList(store.state.currentBoard.id, title)
+function openAddListModal() {
+    newListTitle.value = ''
+    showInputModal.value = true
+
+    nextTick(() => {
+      if(inputListRef.value) inputListRef.value.focus()
+    })
+}
+
+async function confirmAddList() {
+    if (newListTitle.value.trim()) {
+        await store.addList(store.state.currentBoard.id, newListTitle.value)
+        showInputModal.value = false
+        newListTitle.value = ''
     }
 }
 
@@ -61,3 +99,6 @@ async function deleteTask(taskId) {
     currentTask.value = null
 }
 </script>
+
+<style scoped>
+</style>

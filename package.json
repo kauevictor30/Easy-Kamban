@@ -22,6 +22,7 @@
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
+    "@iconify/vue": "^5.0.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "daisyui": "^5.5.5",
     "eslint": "^9.33.0",

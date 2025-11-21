@@ -1,23 +1,50 @@
 <template>
-  <div class="flex flex-col h-screen bg-[#0f172a]">
-    <header class="h-16 bg-gray-200 flex items-center justify-between px-6 shadow-md shrink-0">
-      <div class="font-bold text-xl text-gray-800">Easy Kanban</div>
-      
-      <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-          <div class="w-10 rounded-full bg-gray-400">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+  <div class="flex flex-col h-screen bg-[#0f172a] text-gray-100">
+
+    <header class="navbar bg-[#1e293b] border-b border-gray-800 shadow-lg z-40 h-16 shrink-0 px-4">
+
+      <div class="navbar-start">
+      </div>
+
+      <div class="navbar-center gap-3">
+        <div class="w-25 h-auto rounded-lg flex items-center justify-center text-primary">
+           <img src="/src/assets/images/Logo.svg" alt="">
+        </div>
+      </div>
+
+      <div class="navbar-end gap-4">
+        <button @click="logout" class="btn btn-ghost btn-sm text-gray-400 hover:text-error tooltip tooltip-bottom" data-tip="Sair">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </button>
+
+        <div class="avatar placeholder">
+          <div class="bg-primary text-primary-content rounded-full w-10 ring ring-primary ring-offset-base-100 ring-offset-2">
+            <span class="text-sm font-bold">U</span>
           </div>
         </div>
       </div>
     </header>
 
-    <main class="flex-1 overflow-x-auto overflow-y-hidden p-6">
+    <main class="flex-1 overflow-hidden relative">
       <router-view></router-view>
     </main>
+
   </div>
 </template>
 
 <script setup>
-// Removemos a lógica de sidebar antiga pois o design novo não usa
+import { useRouter } from 'vue-router'
+import store from '../store.js'
+
+const router = useRouter()
+
+function logout() {
+  if(confirm('Deseja realmente sair?')) {
+    store.logout()
+    router.push('/login')
+  }
+}
 </script>
+
+<style scoped>
+</style>

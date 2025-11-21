@@ -1,30 +1,3 @@
-<script setup>
-import { ref, watch } from 'vue'
-
-const props = defineProps({
-  isOpen: Boolean,
-  task: Object
-})
-
-const emit = defineEmits(['close', 'save', 'delete'])
-
-const editedTask = ref({ ...props.task })
-
-watch(() => props.task, (newTask) => {
-  editedTask.value = { ...newTask }
-})
-
-function save() {
-  emit('save', editedTask.value)
-}
-
-function remove() {
-    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
-        emit('delete', props.task.id)
-    }
-}
-</script>
-
 <template>
   <div v-if="isOpen" class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
@@ -67,6 +40,33 @@ function remove() {
   </div>
 </template>
 
+<script setup>
+import { ref, watch } from 'vue'
+
+const props = defineProps({
+  isOpen: Boolean,
+  task: Object
+})
+
+const emit = defineEmits(['close', 'save', 'delete'])
+
+const editedTask = ref({ ...props.task })
+
+watch(() => props.task, (newTask) => {
+  editedTask.value = { ...newTask }
+})
+
+function save() {
+  emit('save', editedTask.value)
+}
+
+function remove() {
+    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+        emit('delete', props.task.id)
+    }
+}
+</script>
+
 <style scoped>
 .modal-overlay {
   position: fixed;
@@ -82,7 +82,7 @@ function remove() {
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: #4f4f4f;
   padding: 24px;
   border-radius: 12px;
   width: 90%;

@@ -10,7 +10,7 @@ const routes = [
   },
   {
     path: '/',
-    component: () => import('../layouts/layoutDefault.vue'),
+    component: () => import('/src/layouts/layoutDefault.vue'),
     meta: { requiresAuth: true },
     children: [
       {
@@ -31,7 +31,6 @@ router.beforeEach((to, from, next) => {
   const isLoggedIn = !!sessionStorage.getItem('loggedInUser')
 
   if (to.meta.requiresAuth && !isLoggedIn) {
-    alert('Você precisa estar logado para ver o quadro.')
     next('/login')
   } else {
     next()

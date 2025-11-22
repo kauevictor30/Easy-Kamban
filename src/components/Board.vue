@@ -9,7 +9,7 @@
     />
     <div class="min-w-[280px] shrink-0">
         <button
-          class="w-full p-3 bg-base-100/50 hover:bg-base-100 border border-dashed border-base-content/20 rounded-lg text-base-content/70 font-medium text-left transition-colors flex items-center gap-2"
+          class="w-full p-3 bg-[#243C5F] hover:bg-base-100 border border-dashed border-base-content/20 rounded-lg text-base-content/70 font-medium text-left transition-colors flex items-center gap-2"
           @click="openAddListModal">
             <span>+</span> Adicionar outra lista
         </button>
@@ -22,16 +22,16 @@
         @delete="deleteTask"
     />
     <div v-if="showInputModal" class="modal modal-open modal-bottom sm:modal-middle cursor-pointer" @click.self="showInputModal = false">
-      <div class="modal-box bg-base-100">
-        <h3 class="font-bold text-lg text-base-content">Nova Lista</h3>
+      <div class="modal-box bg-[#243C5F]">
+        <h3 class="font-bold text-lg text-white ">Nova Lista</h3>
         <div class="py-4">
-          <p class="text-sm text-base-content/70 mb-2">Qual será o nome da nova coluna?</p>
+          <p class="text-sm text-gray-300 mb-2">Qual será o nome da nova coluna?</p>
           <input
             ref="inputListRef"
             v-model="newListTitle"
             type="text"
             placeholder="Ex: A Fazer, Em Revisão..."
-            class="input input-bordered w-full focus:input-primary"
+            class="input input-bordered w-full bg-[#0f172a] focus:input-primary"
             @keyup.enter="confirmAddList"
           />
         </div>

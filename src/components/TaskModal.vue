@@ -82,7 +82,7 @@ function remove() {
 }
 
 .modal-content {
-  background-color: #4f4f4f;
+  background-color: #243C5F;
   padding: 24px;
   border-radius: 12px;
   width: 90%;
@@ -99,7 +99,7 @@ function remove() {
 
 .modal-header h3 {
   margin: 0;
-  color: #1e293b;
+  color: #fafafa;
 }
 
 .btn-close {
@@ -118,7 +118,7 @@ function remove() {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  color: #475569;
+  color: #ffffff;
 }
 
 .form-group input,
@@ -156,7 +156,7 @@ function remove() {
 }
 
 .btn-save {
-  background-color: #3b82f6;
+  background-color: #3bf657;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -166,12 +166,12 @@ function remove() {
 }
 
 .btn-save:hover {
-  background-color: #2563eb;
+  background-color: #25be3c;
 }
 
 .btn-cancel {
-  background-color: #f1f5f9;
-  color: #475569;
+  background-color: #0D213A;
+  color: #ffffff;
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
@@ -180,11 +180,11 @@ function remove() {
 }
 
 .btn-cancel:hover {
-  background-color: #e2e8f0;
+  background-color: #071321;
 }
 
 .btn-delete {
-    background-color: #fee2e2;
+    background-color: #0D213A;
     color: #ef4444;
     border: none;
     padding: 10px 20px;
@@ -194,6 +194,6 @@ function remove() {
 }
 
 .btn-delete:hover {
-    background-color: #fecaca;
+    background-color: #081626;
 }
 </style>

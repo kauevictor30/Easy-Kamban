@@ -1,12 +1,12 @@
 <template>
   <div class="w-72 shrink-0 flex flex-col max-h-full">
-    <div class="bg-base-100 rounded-xl p-3 shadow-lg border border-base-300 flex flex-col max-h-full">
+    <div class="bg-[#243C5F] rounded-xl p-3 shadow-lg flex flex-col max-h-full">
 
       <div class="flex justify-between items-center mb-3 px-1">
-        <h2 class="font-bold text-base-content">{{ title }}</h2>
+        <h2 class="font-bold text-base-100">{{ title }}</h2>
 
         <button
-          class="btn btn-ghost btn-xs btn-circle text-base-content/50 hover:text-error transition-colors"
+          class="btn btn-ghost btn-xs btn-circle text-base-100 hover:text-error transition-colors"
           @click="openDeleteModal"
           title="Excluir lista"
         >
@@ -29,7 +29,7 @@
       </div>
 
       <div class="mt-3">
-         <button class="btn btn-sm w-full btn-ghost justify-start normal-case rounded-lg text-base-content/70 hover:bg-base-200" @click="openAddTaskModal">
+         <button class="btn btn-sm w-full btn-ghost justify-start normal-case rounded-lg text-gray-400 hover:bg-base-100" @click="openAddTaskModal">
             <Icon icon="lucide:plus" width="16" height="16" class="mr-1" />
             Adicionar tarefa
          </button>
@@ -37,9 +37,9 @@
     </div>
 
     <div v-if="showDeleteModal" class="modal modal-open modal-bottom sm:modal-middle cursor-pointer" @click.self="showDeleteModal = false">
-      <div class="modal-box bg-base-100">
-        <h3 class="font-bold text-lg text-error">Excluir Lista?</h3>
-        <p class="py-4 text-base-content/80">Tem certeza que deseja excluir a lista "<strong>{{ title }}</strong>" e todas as suas tarefas? Essa ação não pode ser desfeita.</p>
+      <div class="modal-box bg-[#243C5F]">
+        <h3 class="font-bold text-error">Excluir Lista?</h3>
+        <p class="py-4 text-white">Tem certeza que deseja excluir a lista "<strong>{{ title }}</strong>" e todas as suas tarefas? Essa ação não pode ser desfeita.</p>
         <div class="modal-action">
           <button class="btn btn-ghost" @click="showDeleteModal = false">Cancelar</button>
           <button class="btn btn-error text-white" @click="confirmDeleteList">Sim, excluir</button>
@@ -48,16 +48,16 @@
     </div>
 
     <div v-if="showAddTaskModal" class="modal modal-open modal-bottom sm:modal-middle cursor-pointer" @click.self="showAddTaskModal = false">
-      <div class="modal-box bg-base-100">
-        <h3 class="font-bold text-lg text-base-content">Nova Tarefa</h3>
+      <div class="modal-box bg-[#243C5F]">
+        <h3 class="font-bold text-lg text-gray-300">Nova Tarefa</h3>
         <div class="py-4">
-          <p class="text-sm text-base-content/70 mb-2">O que precisa ser feito?</p>
+          <p class="text-sm text-white mb-2">O que precisa ser feito?</p>
           <input
             ref="inputTaskRef"
             v-model="newTaskTitle"
             type="text"
             placeholder="Ex: Criar protótipo, Revisar texto..."
-            class="input input-bordered w-full focus:input-primary"
+            class="input input-bordered w-full bg-[#0f172a] focus:input-primary"
             @keyup.enter="confirmAddTask"
           />
         </div>

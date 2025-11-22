@@ -36,7 +36,6 @@ const actions = {
         if (existing) throw new Error('Email already in use');
 
         const userId = await db.users.add({ email, password, name });
-        // Create default board for new user
         await db.boards.add({ userId, title: 'My Board' });
 
         return userId;
@@ -55,11 +54,9 @@ const actions = {
 
         let board = await db.boards.where('userId').equals(state.currentUser.id).first();
         if (!board) {
-            // Fallback if no board exists (shouldn't happen for new users due to register logic, but good for safety)
             const boardId = await db.boards.add({ userId: state.currentUser.id, title: 'My Board' });
             board = await db.boards.get(boardId);
 
-            // Create default lists
             await this.addList(board.id, 'A Fazer');
             await this.addList(board.id, 'Em Andamento');
             await this.addList(board.id, 'Concluído');
@@ -72,7 +69,6 @@ const actions = {
         if (!state.currentBoard) return;
         state.lists = await db.lists.where('boardId').equals(state.currentBoard.id).sortBy('position');
 
-        // Load tasks for all lists
         const listIds = state.lists.map(l => l.id);
         state.tasks = await db.tasks.where('listId').anyOf(listIds).toArray();
     },
@@ -100,9 +96,6 @@ const actions = {
     },
 
     async moveTask(taskId, newListId, newPosition) {
-        // This is a simplified move. For full drag and drop reordering, we need more complex logic
-        // to update positions of other items.
-        // For now, we just update listId.
         await db.tasks.update(taskId, { listId: newListId });
         await this.loadLists();
     },

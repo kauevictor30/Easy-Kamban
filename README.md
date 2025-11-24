@@ -3,8 +3,6 @@
 > **Organize ideias. Domine o fluxo.**
 > A ferramenta definitiva para estudantes e times ágeis.
 
-![Easy Kanban Banner](https://via.placeholder.com/1200x400/0f172a/3b82f6?text=Easy+Kanban+Project)
-
 ## 📖 Sobre o Projeto
 
 O **Easy Kanban** é uma aplicação web de gerenciamento de tarefas baseada na metodologia ágil Kanban. Desenvolvido com foco em **minimalismo**, **performance** e **usabilidade**, o projeto oferece uma experiência fluida com tema escuro nativo (Dark Mode) para longas sessões de estudo ou trabalho.

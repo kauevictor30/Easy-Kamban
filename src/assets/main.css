@@ -2,15 +2,10 @@
 @plugin "daisyui";
 
 :root {
-  /* Paleta baseada nas suas imagens */
   --color-bg-dark: #0f172a;
-  /* Fundo geral */
   --color-list-bg: #1e293b;
-  /* Fundo das listas */
-  --color-header: #f1f5f9;
-  /* Header claro */
+  --color-header: #ffffff;
   --color-text-main: #0d0d0d;
-  /* Texto principal */
 }
 
 html,
@@ -24,7 +19,6 @@ body,
   font-family: 'Inter', sans-serif;
 }
 
-/* Removemos o grid antigo do PetClinic que quebrava o layout */
 #app {
   display: block;
   max-width: 100%;

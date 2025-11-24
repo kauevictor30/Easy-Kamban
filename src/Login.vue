@@ -1,16 +1,116 @@
+<template>
+  <div class="min-h-screen flex items-center justify-center bg-[#0f172a] p-4">
+
+    <fieldset class="fieldset w-full max-w-sm bg-[#1e293b] border border-gray-700 p-8 rounded-2xl shadow-2xl">
+
+      <legend class="fieldset-legend text-xl font-bold uppercase tracking-widest px-4 text-gray-100 bg-[#0f172a] border border-gray-700 rounded-lg">
+        {{ mode === 'login' ? 'Acesso' : 'Nova Conta' }}
+      </legend>
+
+      <div class="flex justify-center mb-8 mt-4">
+        <div class="p-4 bg-[#0f172a] rounded-full border border-gray-700 shadow-inner">
+          <Icon icon="lucide:user" width="40" height="40" class="text-primary" />
+        </div>
+      </div>
+
+      <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
+
+        <div v-if="mode === 'register'">
+             <label class="label py-0 pb-2">
+                <span class="label-text text-gray-300">Nome</span>
+             </label>
+             <div class="relative">
+                <Icon icon="lucide:smile" class="absolute left-3 top-3 text-gray-500" width="20" />
+                <input type="text" v-model="name" placeholder="Seu nome"
+                class="input w-full pl-10 bg-[#0f172a] border-gray-700 text-white focus:border-primary transition-colors" required />
+             </div>
+        </div>
+
+        <div>
+          <label class="label py-0 pb-2">
+            <span class="label-text text-gray-300">Email</span>
+          </label>
+          <div class="relative">
+            <Icon icon="lucide:mail" class="absolute left-3 top-3 text-gray-500" width="20" />
+            <input type="email" v-model="email" placeholder="seu@email.com"
+            class="input w-full pl-10 bg-[#0f172a] border-gray-700 text-white focus:border-primary transition-colors" required />
+          </div>
+        </div>
+
+        <div>
+          <label class="label py-0 pb-2">
+            <span class="label-text text-gray-300">Senha</span>
+          </label>
+          <div class="relative">
+             <Icon icon="lucide:lock" class="absolute left-3 top-3 text-gray-500" width="20" />
+             <input type="password" v-model="password" placeholder="••••••••"
+             class="input w-full pl-10 bg-[#0f172a] border-gray-700 text-white focus:border-primary transition-colors" required />
+          </div>
+        </div>
+
+        <div v-if="mode === 'register'">
+          <label class="label py-0 pb-2">
+            <span class="label-text text-gray-300">Confirmar Senha</span>
+          </label>
+          <div class="relative">
+            <Icon icon="lucide:lock" class="absolute left-3 top-3 text-gray-500" width="20" />
+            <input type="password" v-model="confirmPassword" placeholder="••••••••"
+            class="input w-full pl-10 bg-[#0f172a] border-gray-700 text-white focus:border-primary transition-colors" required />
+          </div>
+        </div>
+
+        <div v-if="mode === 'login'" class="text-right">
+            <a href="#" class="link link-hover text-xs text-gray-400 hover:text-white transition-colors">Esqueceu a senha?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full mt-6 font-bold text-white shadow-lg shadow-primary/20">
+          {{ mode === 'login' ? 'Entrar na Plataforma' : 'Criar Minha Conta' }}
+        </button>
+      </form>
+
+      <div class="mt-8 text-center pt-6 border-t border-gray-700/50">
+        <p class="text-sm text-gray-400 mb-2">
+            {{ mode === 'login' ? 'Ainda não tem acesso?' : 'Já possui cadastro?' }}
+        </p>
+        <button @click="mode = (mode === 'login' ? 'register' : 'login')" class="btn btn-outline btn-sm w-full border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white">
+          {{ mode === 'login' ? 'Criar conta gratuita' : 'Fazer Login' }}
+        </button>
+      </div>
+
+    </fieldset>
+
+    <Popup
+      :isOpen="showPopup"
+      :title="popupTitle"
+      :message="popupMessage"
+      @close="showPopup = false"
+    />
+  </div>
+</template>
+
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { Icon } from '@iconify/vue'
 import store from './store.js'
+import Popup from './components/PopUp.vue'
 
 const router = useRouter()
-
 const mode = ref('login')
-
 const email = ref('')
 const password = ref('')
 const name = ref('')
 const confirmPassword = ref('')
+
+const showPopup = ref(false)
+const popupMessage = ref('')
+const popupTitle = ref('')
+
+function openAlert(message, title = 'Atenção') {
+    popupMessage.value = message
+    popupTitle.value = title
+    showPopup.value = true
+}
 
 async function handleSubmit() {
     if (mode.value === 'login') {
@@ -19,99 +119,30 @@ async function handleSubmit() {
             if (success) {
                 router.push('/')
             } else {
-                alert('E-mail ou senha inválidos.')
+                openAlert('E-mail ou senha inválidos.', 'Erro de Acesso')
             }
         } catch (error) {
             console.error(error)
-            alert('Erro ao tentar fazer login.')
+            openAlert('Erro ao tentar fazer login.')
         }
     } else {
         if (password.value !== confirmPassword.value) {
-            alert('As senhas não coincidem.')
+            openAlert('As senhas digitadas não coincidem.')
             return
         }
         try {
             await store.register(email.value, password.value, name.value)
-            alert('Usuário registrado com sucesso! Faça login para continuar.')
+            openAlert('Conta criada com sucesso! Faça login para começar.', 'Bem-vindo!')
             mode.value = 'login'
             password.value = ''
             confirmPassword.value = ''
         } catch (error) {
             console.error(error)
-            alert(error.message || 'Erro ao registrar.')
+            openAlert(error.message || 'Erro ao registrar.')
         }
     }
 }
 </script>
 
-<template>
-  <div class="min-h-screen flex items-center justify-center bg-base-300 p-4">
-
-    <fieldset class="fieldset w-full max-w-sm bg-base-100 border border-base-300 p-6 rounded-box shadow-xl">
-
-      <legend class="fieldset-legend text-xl font-bold uppercase tracking-widest px-2">
-        {{ mode === 'login' ? 'Acesso' : 'Cadastro' }}
-      </legend>
-
-      <div class="flex justify-center mb-6 mt-2">
-        <div class="avatar placeholder">
-          <div class="bg-neutral text-neutral-content rounded-full w-20">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
-
-        <div v-if="mode === 'register'">
-             <label class="label py-0 pb-1">
-                <span class="label-text">Nome</span>
-             </label>
-             <input type="text" v-model="name" placeholder="Seu nome"
-             class="input input-bordered w-full" required />
-        </div>
-
-        <div>
-          <label class="label py-0 pb-1">
-            <span class="label-text">Email</span>
-          </label>
-          <input type="email" v-model="email" placeholder="usuario@exemplo.com"
-          class="input input-bordered w-full" required />
-        </div>
-
-        <div>
-          <label class="label py-0 pb-1">
-            <span class="label-text">Senha</span>
-          </label>
-          <input type="password" v-model="password" placeholder="••••••••"
-          class="input input-bordered w-full" required />
-        </div>
-
-        <div v-if="mode === 'register'">
-          <label class="label py-0 pb-1">
-            <span class="label-text">Confirmar Senha</span>
-          </label>
-          <input type="password" v-model="confirmPassword" placeholder="••••••••"
-          class="input input-bordered w-full" required />
-        </div>
-
-        <div v-if="mode === 'login'" class="text-right">
-            <a href="#" class="link link-hover text-xs text-base-content/70">Esqueceu a senha?</a>
-        </div>
-
-        <button type="submit" class="btn btn-primary w-full mt-4 font-bold">
-          {{ mode === 'login' ? 'Entrar' : 'Cadastrar' }}
-        </button>
-      </form>
-
-      <div class="mt-6 text-center">
-        <button @click="mode = (mode === 'login' ? 'register' : 'login')" class="link link-hover text-sm text-base-content/70">
-          {{ mode === 'login' ? 'Não tem conta? Crie uma agora' : 'Já tem conta? Faça login' }}
-        </button>
-      </div>
-
-    </fieldset>
-  </div>
-</template>
+<style scoped>
+</style>
